@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Container, Grid, Typography, Button, Link } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Container, Grid, Typography, Button } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 interface Store {
