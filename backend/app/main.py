@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Body
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any
 import pandas as pd
@@ -30,6 +31,15 @@ app = FastAPI(
     title="Pawsitive Care API",
     description="API for predicting livestock diseases based on symptoms and other factors.",
     version="1.0.1"
+)
+
+# --- CORS Configuration ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with your Vercel domain
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- Model Loading ---
