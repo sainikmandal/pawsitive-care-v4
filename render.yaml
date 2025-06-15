@@ -7,10 +7,15 @@ services:
     buildCommand: |
       pip install -r backend/requirements.txt
     startCommand: |
-      uvicorn app.main:app --host 0.0.0.0 --port $PORT
+      uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 30
+    healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.3
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PORT
+        value: "10000"
 
   # Frontend service
   - type: web
@@ -21,9 +26,9 @@ services:
       cd frontend
       rm -rf node_modules package-lock.json
       npm cache clean --force
-      npm install --legacy-peer-deps --force
+      npm install
       npm install --save-dev @types/node@20.11.19 @types/react@18.2.55 @types/react-dom@18.2.19 @types/react-router-dom@5.3.3 typescript@5.3.3
-      npm install --save-dev @types/react@18.2.55 @types/react-dom@18.2.19
+      npm install --save-dev vite@5.1.4
       npm run build || (echo "Build failed but continuing..." && exit 0)
     startCommand: |
       cd frontend
