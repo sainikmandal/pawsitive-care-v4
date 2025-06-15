@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import type { PredictionInput, PredictionResponse, HealthResponse } from '../types';
 
-// Use the Vite proxy URL
-const API_BASE_URL = '/api';
+// Use the environment variable for API URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://pawsitive-care-backend.onrender.com';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
