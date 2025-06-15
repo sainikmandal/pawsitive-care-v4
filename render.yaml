@@ -9,7 +9,7 @@ services:
       pip install -r requirements.txt
     startCommand: |
       cd backend
-      uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 30
+      uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 30 --log-level info
     healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
@@ -31,9 +31,11 @@ services:
       npm install
       npm install --save-dev @types/node@20.11.19 @types/react@18.2.55 @types/react-dom@18.2.19 @types/react-router-dom@5.3.3 typescript@5.3.3
       npm install --save-dev vite@5.1.4
+      export PATH="$PATH:$(npm bin)"
       npm run build || (echo "Build failed but continuing..." && exit 0)
     startCommand: |
       cd frontend
+      export PATH="$PATH:$(npm bin)"
       npm run preview -- --host 0.0.0.0 --port $PORT
     envVars:
       - key: NODE_VERSION
