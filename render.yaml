@@ -3,19 +3,9 @@ services:
   - type: web
     name: pawsitive-care-backend
     plan: free
-    env: python
-    buildCommand: |
-      cd backend
-      pip install -r requirements.txt
-    startCommand: |
-      cd backend
-      uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 30 --log-level info
+    dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /health
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.13.3
-      - key: PYTHONUNBUFFERED
-        value: "1"
       - key: PORT
         value: "10000"
 
@@ -23,28 +13,9 @@ services:
   - type: web
     name: pawsitive-care-frontend
     plan: free
-    env: node
-    buildCommand: |
-      cd frontend
-      rm -rf node_modules package-lock.json
-      npm cache clean --force
-      npm install
-      npm install --save-dev @types/node@20.11.19 @types/react@18.2.55 @types/react-dom@18.2.19 @types/react-router-dom@5.3.3 typescript@5.3.3
-      npm install --save-dev vite@5.1.4
-      export PATH="$PATH:$(npm bin)"
-      npm run build || (echo "Build failed but continuing..." && exit 0)
-    startCommand: |
-      cd frontend
-      export PATH="$PATH:$(npm bin)"
-      npm run preview -- --host 0.0.0.0 --port $PORT
+    dockerfilePath: ./frontend/Dockerfile
     envVars:
-      - key: NODE_VERSION
-        value: 20.11.1
       - key: VITE_API_URL
         value: https://pawsitive-care-backend.onrender.com
       - key: NODE_ENV
         value: production
-      - key: TSC_COMPILE_ON_ERROR
-        value: "true"
-      - key: SKIP_PREFLIGHT_CHECK
-        value: "true"
